@@ -4,6 +4,8 @@
  */
 package com.tokokomputer.form;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author acer
@@ -135,6 +137,11 @@ public class Pegawai extends javax.swing.JFrame {
 
         jLabel8.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         jLabel8.setText("Penjualan");
+        jLabel8.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jLabel8MousePressed(evt);
+            }
+        });
         jPanel2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(116, 141, -1, -1));
 
         jPanel6.setBackground(new java.awt.Color(255, 204, 153));
@@ -158,6 +165,11 @@ public class Pegawai extends javax.swing.JFrame {
         jPanel2.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 290, 80));
 
         jPanel7.setBackground(new java.awt.Color(255, 204, 153));
+        jPanel7.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jPanel7MousePressed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
@@ -173,6 +185,11 @@ public class Pegawai extends javax.swing.JFrame {
         jPanel2.add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 110, 290, 80));
 
         jPanel9.setBackground(new java.awt.Color(255, 204, 153));
+        jPanel9.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jPanel9MousePressed(evt);
+            }
+        });
 
         jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com.tokokomputer.icons/keranjang.png"))); // NOI18N
 
@@ -206,6 +223,11 @@ public class Pegawai extends javax.swing.JFrame {
         jPanel2.add(jPanel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 210, 290, 80));
 
         jPanel8.setBackground(new java.awt.Color(255, 204, 153));
+        jPanel8.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jPanel8MousePressed(evt);
+            }
+        });
 
         jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com.tokokomputer.icons/jadwal.png"))); // NOI18N
 
@@ -242,6 +264,11 @@ public class Pegawai extends javax.swing.JFrame {
         jPanel2.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 470, -1, -1));
 
         jPanel10.setBackground(new java.awt.Color(255, 204, 204));
+        jPanel10.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jPanel10MousePressed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
         jPanel10.setLayout(jPanel10Layout);
@@ -459,6 +486,40 @@ public class Pegawai extends javax.swing.JFrame {
     private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jRadioButton1ActionPerformed
+
+    private void jPanel7MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel7MousePressed
+          new Penjualan().setVisible(true);
+          this.setVisible(false);
+    }//GEN-LAST:event_jPanel7MousePressed
+
+    private void jLabel8MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MousePressed
+         new Penjualan().setVisible(true);
+         this.setVisible(false);
+    }//GEN-LAST:event_jLabel8MousePressed
+
+    private void jPanel9MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel9MousePressed
+          new Pembelian().setVisible(true);
+          this.setVisible(false);
+    }//GEN-LAST:event_jPanel9MousePressed
+
+    private void jPanel10MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel10MousePressed
+      int dialogbtn = JOptionPane.YES_NO_OPTION;
+        int dialogresult = JOptionPane.showConfirmDialog(this, "Anda Yakin Ingin Keluar?", "Warning", dialogbtn);
+
+        if (dialogresult == 0){
+            new Login().setVisible(true);
+            this.setVisible(false);
+
+        }
+        else {
+
+        }
+    }//GEN-LAST:event_jPanel10MousePressed
+
+    private void jPanel8MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel8MousePressed
+           new Jadwal().setVisible(true);
+            this.setVisible(false);
+    }//GEN-LAST:event_jPanel8MousePressed
 
     /**
      * @param args the command line arguments
