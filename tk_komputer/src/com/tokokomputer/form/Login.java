@@ -13,6 +13,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import javax.swing.JOptionPane;
 
 
@@ -21,12 +23,49 @@ import javax.swing.JOptionPane;
  * @author acer
  */
 public class Login extends javax.swing.JFrame {
-
+Connection conn;
+ResultSet rs = null;
+PreparedStatement pst = null;
     /**
      * Creates new form Login
      */
-    public Login() {
+    public Login(){
         initComponents();
+        this.conn = Koneksi.getKoneksi();
+    
+    }
+    
+    
+    
+    public void login(){
+        try{
+           String sql = "select * from karyawan where nama_karyawan='" + txt_user.getText() + "'and password='" + txt_pass.getText()+"'";
+           java.sql.Connection conn=(Connection)Koneksi.getKoneksi();
+           java.sql.PreparedStatement pst = conn.prepareCall(sql);
+           java.sql.ResultSet rs=pst.executeQuery();
+          
+           if(rs.next()){
+           
+           if(txt_user.getText().equals("")|| txt_pass.getText().equals("")){
+            JOptionPane.showMessageDialog(this, "User atau Password Tidak Boleh Kosong", "Peringatan", JOptionPane.ERROR_MESSAGE);
+            txt_user.setText(null);
+            txt_pass.setText(null);
+           }
+           else if(txt_user.getText().equals(rs.getString("nama_karyawan")) || txt_pass.getText().equals(rs.getString("password"))){
+                   JOptionPane.showMessageDialog(null, "Sukses Login");
+                   this.setVisible(false);
+                   new Dashboard(rs.getString(1)).setVisible(true);
+               }
+               
+       }else{
+                   JOptionPane.showMessageDialog(null, "Gagal Login");
+                   txt_user.setText("");
+                   txt_pass.setText("");
+               }
+       }catch (Exception e){
+           JOptionPane.showMessageDialog(this, e.getMessage());
+       }
+        
     }
 
     /**
@@ -184,34 +223,7 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_jPanel1MouseExited
 
     private void jPanel1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MousePressed
-       try{
-           String sql = "select * from karyawan where nama_karywan='" + txt_user.getText() + "'and password='" + txt_pass.getText()+"'";
-           java.sql.Connection conn=(Connection)Koneksi.getKoneksi();
-           java.sql.PreparedStatement pst = conn.prepareCall(sql);
-           java.sql.ResultSet rs=pst.executeQuery();
-          
-           if(rs.next()){
-           
-           if(txt_user.getText().equals("")|| txt_pass.getText().equals("")){
-            JOptionPane.showMessageDialog(this, "User atau Password Tidak Boleh Kosong", "Peringatan", JOptionPane.ERROR_MESSAGE);
-            txt_user.setText(null);
-            txt_pass.setText(null);
-           }
-           else if(txt_user.getText().equals(rs.getString("username")) || txt_pass.getText().equals(rs.getString("password"))){
-                   JOptionPane.showMessageDialog(null, "Sukses Login");
-                   this.setVisible(false);
-                   new Dashboard().setVisible(true);
-               }
-               
-       }else{
-                   JOptionPane.showMessageDialog(null, "Gagal Login");
-                   txt_user.setText("");
-                   txt_pass.setText("");
-               }
-       }catch (Exception e){
-           JOptionPane.showMessageDialog(this, e.getMessage());
-       }
-        
+       login();
        
     }//GEN-LAST:event_jPanel1MousePressed
 
