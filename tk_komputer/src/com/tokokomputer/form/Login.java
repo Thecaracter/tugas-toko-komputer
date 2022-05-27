@@ -4,6 +4,7 @@
  */
 package com.tokokomputer.form;
 
+import com.tokokomputer.controller.Koneksi;
 import java.awt.Color;
 import java.awt.Desktop;
 import java.net.URI;
@@ -11,6 +12,8 @@ import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.io.IOException;
+import java.sql.Connection;
+import javax.swing.JOptionPane;
 
 
 /**
@@ -36,7 +39,7 @@ public class Login extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel3 = new javax.swing.JPanel();
-        jTextField1 = new javax.swing.JTextField();
+        txt_user = new javax.swing.JTextField();
         txt_pass = new javax.swing.JPasswordField();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -56,10 +59,10 @@ public class Login extends javax.swing.JFrame {
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jTextField1.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        jTextField1.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        jTextField1.setBorder(null);
-        jPanel3.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 160, 220, 20));
+        txt_user.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        txt_user.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        txt_user.setBorder(null);
+        jPanel3.add(txt_user, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 160, 220, 20));
 
         txt_pass.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         txt_pass.setHorizontalAlignment(javax.swing.JTextField.LEFT);
@@ -136,9 +139,22 @@ public class Login extends javax.swing.JFrame {
         jPanel3.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 400, -1, -1));
 
         jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/tokokomputer/formjpg/icons8-facebook-20.png"))); // NOI18N
+        jLabel9.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jLabel9MouseExited(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jLabel9MousePressed(evt);
+            }
+        });
         jPanel3.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 400, -1, -1));
 
         jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/tokokomputer/formjpg/icons8-youtube-20.png"))); // NOI18N
+        jLabel10.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jLabel10MousePressed(evt);
+            }
+        });
         jPanel3.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 400, -1, -1));
 
         jLabel11.setText("Hubungi kami di");
@@ -168,8 +184,35 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_jPanel1MouseExited
 
     private void jPanel1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MousePressed
-       this.setVisible(false);
-       new Dashboard().setVisible(true);
+       try{
+           String sql = "select * from karyawan where nama_karywan='" + txt_user.getText() + "'and password='" + txt_pass.getText()+"'";
+           java.sql.Connection conn=(Connection)Koneksi.getKoneksi();
+           java.sql.PreparedStatement pst = conn.prepareCall(sql);
+           java.sql.ResultSet rs=pst.executeQuery();
+          
+           if(rs.next()){
+           
+           if(txt_user.getText().equals("")|| txt_pass.getText().equals("")){
+            JOptionPane.showMessageDialog(this, "User atau Password Tidak Boleh Kosong", "Peringatan", JOptionPane.ERROR_MESSAGE);
+            txt_user.setText(null);
+            txt_pass.setText(null);
+           }
+           else if(txt_user.getText().equals(rs.getString("username")) || txt_pass.getText().equals(rs.getString("password"))){
+                   JOptionPane.showMessageDialog(null, "Sukses Login");
+                   this.setVisible(false);
+                   new Dashboard().setVisible(true);
+               }
+               
+       }else{
+                   JOptionPane.showMessageDialog(null, "Gagal Login");
+                   txt_user.setText("");
+                   txt_pass.setText("");
+               }
+       }catch (Exception e){
+           JOptionPane.showMessageDialog(this, e.getMessage());
+       }
+        
+       
     }//GEN-LAST:event_jPanel1MousePressed
 
     private void jLabel5MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MousePressed
@@ -183,13 +226,13 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel4MousePressed
 
     private void jLabel7MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MousePressed
-     txt_pass.setText("xoxoxoxoxo");
+     txt_pass.setEchoChar((char)0);
         jLabel7.setVisible(false);
         jLabel6.setVisible(true);
     }//GEN-LAST:event_jLabel7MousePressed
 
     private void jLabel6MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MousePressed
-        txt_pass.setEchoChar((char)0);
+        txt_pass.setEchoChar('*');
         jLabel6.setVisible(false);
         jLabel7.setVisible(true);
     }//GEN-LAST:event_jLabel6MousePressed
@@ -197,11 +240,33 @@ public class Login extends javax.swing.JFrame {
     private void jLabel8MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MousePressed
           Desktop d = Desktop.getDesktop();   
         try {
-            d.browse(java.net.URI.create("https://www.facebook.com/OFFICIALSMKN8JEMBER/"));
+            d.browse(java.net.URI.create("https://www.instagram.com"));
         } catch (IOException ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jLabel8MousePressed
+
+    private void jLabel9MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel9MouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel9MouseExited
+
+    private void jLabel9MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel9MousePressed
+    Desktop d = Desktop.getDesktop();   
+        try {
+            d.browse(java.net.URI.create("https://www.facebook.com"));
+        } catch (IOException ex) {
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+        }       
+    }//GEN-LAST:event_jLabel9MousePressed
+
+    private void jLabel10MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel10MousePressed
+        Desktop d = Desktop.getDesktop();   
+        try {
+            d.browse(java.net.URI.create("https://www.youtube.com/"));
+        } catch (IOException ex) {
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+        }       
+    }//GEN-LAST:event_jLabel10MousePressed
 
     /**
      * @param args the command line arguments
@@ -252,7 +317,7 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JPasswordField txt_pass;
+    private javax.swing.JTextField txt_user;
     // End of variables declaration//GEN-END:variables
 }
